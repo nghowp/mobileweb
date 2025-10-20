@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Login{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <!-- Boxicons (icon cho input, user, lock, v.v.) -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- CSS cơ bản -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/topnav.css') }}">
+
+    <!-- CSS riêng cho từng trang (login / register) -->
+    {% block head %}
+    {% endblock %}
+</head>
+
+<body>
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- JS riêng nếu có -->
+    {% block body_js %}
+    {% endblock %}
+</body>
+</html>

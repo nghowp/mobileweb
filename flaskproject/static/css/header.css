@@ -1,0 +1,118 @@
+.navbar {
+  width: 100%;
+  background-color: #ef5122;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center; /* ✅ căn giữa các phần tử theo chiều dọc */
+  justify-content: space-between;
+  padding: 10px 30px; /* ✅ tạo khoảng đệm trên/dưới */
+  box-sizing: border-box;
+  flex-wrap: wrap;
+} /* CSS phần logo */
+
+/* CSS phần search box */
+
+.navbar__search-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 5px 10px;
+  min-width: 400px;
+}
+
+.navbar__search-box i {
+  font-size: 18px;
+  color: #888;
+  margin-right: 8px;
+}
+
+.navbar__search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+} /* CSS phần caterogy, store, login */
+
+.navbar__store-box,
+.navbar__login,
+.navbar__category-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #df3346, #b32434);
+  border: none;
+  border-radius: 25px;
+  padding: 8px 16px;
+  min-width: 100px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.navbar__store-box:hover,
+.navbar__login:hover,
+.navbar__category-box:hover {
+  background: linear-gradient(135deg, #e84356, #c82c3c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.navbar__store-box i,
+.navbar__login i,
+.navbar__category-box i {
+  font-size: 20px;
+  color: #fff;
+}
+
+.navbar__store-box a,
+.navbar__login a,
+.navbar__category-box p {
+  margin: 0;
+  color: #fff;
+  letter-spacing: 0.3px;
+} /* CSS phần store */
+
+.cart-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #fff;
+  color: #df3346;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 50%;
+  padding: 2px 6px;
+  line-height: 1;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+} /* CSS phần login */
+
+.navbar__login {
+  margin-right: 25px;
+}
+
+/* ===== Logo ===== */
+.navbar__logo-wrap {
+  flex: 0 0 auto;
+  width: 150px;
+  display: flex;
+  align-items: center;
+}
+.navbar__logo-wrap img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+.navbar__logo-wrap:hover img {
+  transform: scale(1.07);
+}

@@ -1,0 +1,55 @@
+  <!-- Boxicons -->
+  <link
+    href="https://cdn.boxicons.com/fonts/basic/boxicons.min.css"
+    rel="stylesheet"
+  />
+
+  <div class="top-nav group">
+    <section>
+      <div class="social-top-nav">
+          <a class="fa fa-facebook"></a>
+          <a class="fa fa-google"></a>
+          <a class="fa fa-youtube"></a>
+      </div>
+        <ul class="top-nav-quicklink">
+          <li><a href="{{ url_for('main.home') }}"><i class="fa fa-home"></i> Trang chủ</a></li>
+          <li><a href="{{ url_for('main.news') }}"><i class="fa fa-newspaper-o"></i> Tin tức</a></li>
+          <li><a href="{{ url_for('main.recruitment') }}"><i class="fa fa-handshake-o"></i> Tuyển dụng</a></li>
+          <li><a href="{{ url_for('main.introduce') }}"><i class="fa fa-info-circle"></i> Giới thiệu</a></li>
+          <li><a href=""><i class="fa fa-wrench"></i> Bảo hành</a></li>
+          <li><a href=""><i class="fa fa-phone"></i> Liên hệ</a></li>
+        </ul>
+    </section>
+  </div>
+
+
+  <div class="navbar">
+    <div class="navbar__logo-wrap">
+      <a href="/">
+        <img
+          src="{{ url_for('static', filename='img/logo.jpg') }}"
+          alt="logo"
+      /></a>
+    </div>
+
+    <div class="navbar__category-box">
+        <i class="bx bx-menu-select"></i>
+        <p>Danh mục</p>
+    </div>
+
+    <div class="navbar__search-box">
+      <i class="bx bx-search"></i>
+      <input type="search" placeholder="Bạn muốn mua gì hôm nay?" id="search" />
+    </div>
+
+    <div class="navbar__store-box">
+      <a href="{{ url_for('main.cart') }}">Giỏ hàng</a>
+      <i class="bx bx-cart-plus"></i>
+      <span class="cart-count">3</span>
+    </div>
+
+    <div class="navbar__login">
+      <a href="{{ url_for('main.login') }}">Đăng nhập</a>
+      <i class="bxr bx-user"></i>
+    </div>
+  </div>

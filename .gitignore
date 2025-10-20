@@ -1,0 +1,70 @@
+# Loại file không cần commit
+
+# ===== Python =====
+# Bỏ qua file biên dịch tự động .pyc, __pycache__
+__pycache__/   
+*.py[cod]
+*.pyo
+*.pyd
+*$py.class
+
+# ===== Virtual environments =====
+# Không commit môi trường ảo (venv/, .env/)
+venv/
+.env/
+.venv/
+env/
+ENV/
+venv.bak/
+env.bak/
+
+# ===== IDE / Editors =====
+# Bỏ qua cấu hình editor như VS Code, PyCharm
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# ===== OS files =====
+# Bỏ qua file hệ thống như .DS_Store (macOS) hoặc Thumbs.db (Windows)
+.DS_Store
+Thumbs.db
+
+# ===== Logs / temp files =====
+# Bỏ qua file log, tạm, backup
+*.log
+*.pot
+*.mo
+*.swp
+*.tmp
+*.bak
+*.old
+
+# ===== Flask specific =====
+# Bỏ qua file database SQLite, thư mục instance/ (nơi chứa config riêng)
+instance/
+*.db
+*.sqlite3
+
+# ===== Build / packaging =====
+# Bỏ qua file khi tạo build hoặc test
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ===== Coverage / test =====
+.coverage
+.tox/
+.nox/
+.pytest_cache/
+htmlcov/
+
+# ===== Jupyter notebooks =====
+# Bỏ qua checkpoint notebook (nếu có)
+.ipynb_checkpoints/
+
+# ===== Others =====
+# Nếu bạn có file config riêng tư, có thể thêm ở đây, ví dụ:
+# config.py
+# secret_key.txt

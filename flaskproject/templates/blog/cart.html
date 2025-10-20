@@ -1,0 +1,19 @@
+{% extends 'layout/base.html' %}
+
+{% block title %} Giỏ hàng {% endblock %}
+
+{% block head_js %}
+    {{ super() }} 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gioHang.css') }}">
+{% endblock %}
+
+{% block content %}
+    <section style="min-height: 67vh;">
+        <table class="listSanPham"></table>
+    </section>
+{% endblock %}
+
+{% block body_js %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/gioHang.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Thế giới điện thoại{% endblock %}
+
+{% block content %}
+<section>
+
+    <!-- Banner -->
+    <div class="banner">
+        <!-- JS trong trangchu.js sẽ tự động thêm các hình banner vào đây -->
+        <div class="owl-carousel owl-theme"></div>
+    </div>
+
+    <!-- Black Friday banner -->
+    <img src="{{ url_for('static', filename='img/banners/blackFriday.gif') }}" alt="Black Friday" style="width: 100%;">
+
+    <br>
+    <div class="companyMenu group flexContain"></div>
+
+    <div class="flexContain">
+
+        <div class="pricesRangeFilter dropdown">
+            <button class="dropbtn">Giá tiền</button>
+            <div class="dropdown-content"></div>
+        </div>
+
+        <div class="promosFilter dropdown">
+            <button class="dropbtn">Khuyến mãi</button>
+            <div class="dropdown-content"></div>
+        </div>
+
+        <div class="starFilter dropdown">
+            <button class="dropbtn">Số lượng sao</button>
+            <div class="dropdown-content"></div>
+        </div>
+
+        <div class="sortFilter dropdown">
+            <button class="dropbtn">Sắp xếp</button>
+            <div class="dropdown-content"></div>
+        </div>
+
+    </div> <!-- End khung chọn bộ lọc -->
+
+    <div class="choosedFilter flexContain">
+        <a id="deleteAllFilter" style="display: none;">
+            <h3>Xóa bộ lọc</h3>
+        </a>
+    </div>
+    <hr>
+
+    <!-- Mặc định ẩn, nếu có filter thì mới hiện -->
+    <div class="contain-products" style="display:none"> 
+        <div class="filterName">
+            <input type="text" placeholder="Lọc trong trang theo tên..." onkeyup="filterProductsName(this)">
+        </div>
+
+        <ul id="products" class="homeproduct group flexContain">
+            <div id="khongCoSanPham">
+                <i class="fa fa-times-circle"></i>
+                Không có sản phẩm nào
+            </div>
+        </ul>
+
+        <div class="pagination"></div>
+    </div>
+
+    <!-- Các khung sản phẩm nổi bật, mới ra mắt, giảm giá, ... -->
+    <!-- <div class="contain-khungSanPham"></div> -->
+    {% if products %}
+    <div class="row">
+    {% for p in products %}
+        <div class="col-md-3 col-6" style="padding: 5px;">
+            <div class="card h-100 d-flex flex-column" style="padding: 5px;">
+                {% if p.image %}
+                    <img src="{{ url_for('static', filename=p.image) }}" class="card-img-top" alt="{{ p.name }}" style="object-fit: contain; height: 150px;">
+                {% else %}
+                    <img src="{{ url_for('static', filename='img/default.png') }}" class="card-img-top" alt="Ảnh mặc định" style="object-fit: contain; height: 150px;">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ p.name }}</h5>
+                    <p class="card-text">{{ "{:,.0f}".format(p.price) }} VNĐ</p> <a href="#" class="btn btn-primary mt-auto">Đặt hàng</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    {% else %}
+        <p style="text-align: center; color: red; font-size: medium;"><i>Không có sản phẩm nào!!!</i></p>
+    {% endif %}
+</section>
+{% endblock %}
+
+<!-- {% block body_js %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/trangchu.js') }}"></script>
+{% endblock %} -->

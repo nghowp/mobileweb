@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Thế giới điện thoại{% endblock %}</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='js/owlcarousel/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='js/owlcarousel/owl.theme.default.min.css') }}">
+
+    <!-- Boostrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/topnav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/banner.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/taikhoan.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/trangchu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home_products.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pagination_phantrang.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    
+    {% block head_js %}
+    <!-- JS cơ bản -->
+    <script src="{{ url_for('static', filename='js/Jquery/Jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owlcarousel/owl.carousel.min.js') }}"></script>
+    {% endblock %}
+</head>
+<body>
+
+    {% include 'layout/header.html' %}
+
+    {% block content %}{% endblock %}
+
+    {% include 'layout/footer.html' %}
+
+    <!-- JS cuối body -->
+    {% block body_js %}
+    <script src="{{ url_for('static', filename='data/products.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/classes.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dungchung.js') }}"></script>
+    {% endblock %}
+
+    <i class="fa fa-arrow-up" id="goto-top-page" onclick="gotoTop()"></i>
+</body>
+</html>
