@@ -1,85 +1,136 @@
-{% extends 'layout/base.html' %}
+{% extends 'layout/base.html' %} {% block title %} {{ product.name or "Chi tiết
+sản phẩm" }} - CleanCode{% endblock %} {% block head_js %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/details.css') }}"
+/>
+{% endblock %} {% block content %}
+<div class="bg-gray-100">
+  <div class="container mx-auto max-w-6xl p-4 md:p-8">
+    <div
+      id="product-details"
+      data-product-id="{{ product.id }}"
+      data-product-name="{{ product.name }}"
+      data-product-price="{{ product.price }}"
+      data-product-img="{{ url_for('static', filename=product.image) }}"
+      class="bg-white rounded-lg shadow-lg overflow-hidden md:grid md:grid-cols-2 md:gap-8"
+    >
+      <div class="p-4 md:p-6">
+        <img
+          id="main-image"
+          src="{{ url_for('static', filename=product.image) }}"
+          alt="Hình ảnh {{ product.name }}"
+          class="w-full h-auto max-h-96 mx-auto object-contain rounded-lg shadow-md transition-all duration-300"
+        />
+      </div>
 
-{% block title %} Chi tiết sản phẩm {% endblock %}
+      <div class="p-4 md:p-6">
+        <span class="text-sm text-gray-500 uppercase tracking-wider"
+          >{{ product.category.name or "Danh mục" }}</span
+        >
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mt-1 mb-3">
+          {{ product.name }}
+        </h1>
 
-{% block head_js %}
-    {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/chitietsanpham.css') }}">
-{% endblock %}
+        <div class="flex items-center mb-4">
+          <div class="text-yellow-400">
+            {% if product.rating_score and product.rating_score > 0 %} {% set
+            rating = product.rating_score %} {% for i in range(1, 6) %} {% if
+            rating >= i %}
+            <i class="fas fa-star"></i>
+            {% elif rating >= i - 0.5 %}
+            <i class="fas fa-star-half-alt"></i>
+            {% else %}
+            <i class="fas fa-star text-gray-300"></i>
+            {% endif %} {% endfor %}
 
-{% block content %}
-    <section>
-        <div id="productNotFound" style="min-height: 58vh; text-align: center; margin: 50px; display: none;">
-            <h1 style="color: red; margin-bottom: 10px;">Không tìm thấy sản phẩm</h1>
-            <a href="{{ url_for('main.home') }}">Quay lại trang chủ</a>
+            <span class="text-gray-600 ml-2 font-semibold"
+              >{{ "%.1f"|format(rating) }}</span
+            >
+
+            {% else %}
+            <i class="fas fa-star text-gray-300"></i>
+            <i class="fas fa-star text-gray-300"></i>
+            <i class="fas fa-star text-gray-300"></i>
+            <i class="fas fa-star text-gray-300"></i>
+            <i class="fas fa-star text-gray-300"></i>
+            {% endif %}
+          </div>
+
+          <span class="text-gray-600 ml-2"
+            >({{ product.rating_count or 0 }} Đánh giá)</span
+          >
         </div>
 
-        <div class="chitietSanpham" style="margin-bottom: 100px;">
-            <h1>Điện thoại</h1>
-            <div class="rating"></div>
-            <div class="rowdetail group">
-                <div class="picture">
-                    <img src="" onclick="opencertain()">
-                </div>
-                <div class="price_sale">
-                    <div class="area_price"> </div>
-                    <div class="ship" style="display: none;">
-                        <img src="{{ url_for('static', filename='img/chitietsanpham/clock-152067_960_720.png') }}">
-                        <div>NHẬN HÀNG TRONG 1 GIỜ</div>
-                    </div>
-                    <div class="area_promo">
-                        <strong>khuyến mãi</strong>
-                        <div class="promo">
-                            <img src="{{ url_for('static', filename='img/chitietsanpham/icon-tick.png') }}">
-                            <div id="detailPromo"> </div>
-                        </div>
-                    </div>
-                    <div class="policy">
-                        <div>
-                            <img src="{{ url_for('static', filename='img/chitietsanpham/box.png') }}">
-                            <p>Trong hộp có: Sạc, Tai nghe, Sách hướng dẫn, Cây lấy sim, Ốp lưng </p>
-                        </div>
-                        <div>
-                            <img src="{{ url_for('static', filename='img/chitietsanpham/icon-baohanh.png') }}">
-                            <p>Bảo hành chính hãng 12 tháng.</p>
-                        </div>
-                        <div class="last">
-                            <img src="{{ url_for('static', filename='img/chitietsanpham/1-1.jpg') }}">
-                            <p>1 đổi 1 trong 1 tháng nếu lỗi, đổi sản phẩm tại nhà trong 1 ngày.</p>
-                        </div>
-                    </div>
-                    <div class="area_order">
-                        <!-- nameProduct là biến toàn cục được khởi tạo giá trị trong phanTich_URL_chiTietSanPham -->
-                        <a class="buy_now" onclick="themVaoGioHang(maProduct, nameProduct);">
-                            <b><i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng</b>
-                            <p>Giao trong 1 giờ hoặc nhận tại cửa hàng</p>
-                        </a>
-                    </div>
-                </div>
-                <div class="info_product">
-                    <h2>Thông số kỹ thuật</h2>
-                    <ul class="info">
-                    </ul>
-                </div>
-            </div>
-            <div id="overlaycertainimg" class="overlaycertainimg">
-                <div class="close" onclick="closecertain()">&times;</div>
-                <div class="overlaycertainimg-content">
-                    <img id="bigimg" class="bigimg" src="{{ url_for('static', filename='img/chitietsanpham/oppo-f9-red-2-400x460.png') }}">
-                    <div class="div_smallimg owl-carousel">
-                        <!-- <img src="img/chitietsanpham/oppo-f9-mau-do-1-org.jpg" onclick="changepic(this.src)">
-                        <img src="img/chitietsanpham/oppo-f9-mau-do-2-org.jpg" onclick="changepic(this.src)">
-                        <img src="img/chitietsanpham/oppo-f9-mau-do-3-org.jpg" onclick="changepic(this.src)"> -->
-                    </div>
-                </div>
-            </div>
+        <div class="mb-6">
+          <span class="text-3xl font-bold text-blue-600 mr-3" style="color: red">{{ "{:,.0f}đ".format(product.price) }}</span>
+          {% if product.old_price and product.old_price > product.price %}
+          <span class="text-xl text-gray-400 line-through" style="color: red">{{ "{:,.0f}đ".format(product.old_price) }}</span>
+          {% endif %}
         </div>
 
-        <div id="goiYSanPham"></div>
-    </section>
-{% endblock %}
+        <div class="text-gray-700 mb-6">
+          <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Màn hình:</strong> {{ product.screen }}</li>
+            <li><strong>Hệ điều hành:</strong> {{ product.operating }}</li>
+            <li><strong>Camera trước:</strong> {{ product.camera_f }}</li>
+            <li><strong>Camera sau:</strong> {{ product.camera_a }}</li>
+            <li><strong>CPU:</strong> {{ product.CPU }}</li>
+            <li><strong>RAM:</strong> {{ product.RAM }}</li>
+            <li><strong>Bộ nhớ:</strong> {{ product.store }}</li>
+            <li><strong>Pin:</strong> {{ product.battery }}</li>
+          </ul>
+        </div>
 
-{% block body_js %}
-    {{ super() }}
-    <script src="{{ url_for('static', filename='js/chitietsanpham.js') }}"></script>
-{% endblock %}
+        <div class="mb-6">
+          <label
+            for="quantity-input"
+            class="text-lg font-semibold text-gray-800 mb-3 block"
+            >Số lượng</label
+          >
+          <div class="flex items-center w-32 border border-gray-300 rounded-lg">
+            <button
+              id="qty-minus"
+              class="w-10 h-10 text-gray-600 hover:bg-gray-100 rounded-l-lg transition"
+            >
+              -
+            </button>
+            <input
+              id="quantity-input"
+              type="number"
+              value="1"
+              min="1"
+              class="w-12 h-10 text-center border-none focus:outline-none focus:ring-0 appearance-none [-moz-appearance:textfield]"
+            />
+            <button
+              id="qty-plus"
+              class="w-10 h-10 text-gray-600 hover:bg-gray-100 rounded-r-lg transition"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <button
+          id="add-to-cart-btn"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 text-lg flex items-center justify-center space-x-2"
+        >
+          <i class="fas fa-shopping-cart"></i>
+          <span>Thêm vào giỏ hàng</span>
+        </button>
+      </div>
+    </div>
+    <div id="toast-notification"></div>
+  </div>
+  {% endblock %}
+  {% block footer %}
+  {% endblock %}
+  {% block body_js %} {{ super() }}
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="{{ url_for('static', filename='js/details.js') }}"></script>
+  {% endblock %}
+</div>

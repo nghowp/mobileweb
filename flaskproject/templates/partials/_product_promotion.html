@@ -1,0 +1,25 @@
+<section id="flash-sale-container" class="flash-sale-section" style="display: none;">
+
+    <div class="flash-sale-header">
+        
+        <div class="header-left">
+            <!-- <h2>🔥 FLASH SALE GIÁ SỐC 🔥</h2> -->
+            <img src="{{ url_for('static', filename='img/flashsale.png') }}" alt="fl">
+            <p>Sản phẩm kết thúc sau:</p>
+        </div>
+        
+        <div id="countdown-timer" class="header-right">
+            <p class="timer-label">Chỉ còn:</p>
+            <div class="timer-display">
+                <span id="hours">00</span>
+                <span class="separator">:</span>
+                <span id="minutes">00</span>
+                <span class="separator">:</span>
+                <span id="seconds">00</span>
+            </div>
+        </div>
+        
+    </div> <div id="flash-sale-products-grid" class="products-grid">
+        </div>
+
+</section>

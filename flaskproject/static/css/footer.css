@@ -1,57 +1,89 @@
-/* Plc */
-.plc {
-	background: #dae2dc;
-	/* overflow: hidden; */
-	font-size: 15px;
-	color: #333;
-	border-top: 1px solid #bbb;
-	border-bottom: 1px solid #bbb;
+/* --- LỰA CHỌN 3: FOOTER SIÊU TỐI GIẢN (CENTERED) --- */
+.footer-minimal {
+  background-color: #ffffff;
+  padding: 30px 15px 20px;
+  text-align: center;
+  color: #666;
+  border-top: 1px solid #e9e9e9;
+  font-size: 13px;
 }
 
-.plc ul {
-	width: 100%;
+.footer-content {
+  max-width: 400px; /* Giới hạn chiều rộng */
+  margin: 0 auto;
 }
 
-.plc li {
-	width: 20%;
-	display: inline-block;
-	box-sizing: border-box;
-	padding: 5px 10px;
-	line-height: 20px;
-	border-right: solid 1px #bbb;
-	margin: 5px 0;
+.footer-minimal h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 5px;
 }
 
-.plc li:last-child {
-	border-right: none;
+.footer-minimal p {
+  font-size: 13px;
+  margin-bottom: 15px;
 }
 
-/* ============= Footer ============= */
-.footer {
-	position: relative;
-	/* height: 40px; */
-	width: 100%;
-	background: #476;
+.newsletter-form-minimal {
+  display: flex;
+  margin-bottom: 20px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.newsletter-form-minimal input {
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 4px 0 0 4px;
+  font-size: 13px;
+}
+.newsletter-form-minimal button {
+  border: none;
+  background-color: #333;
+  color: white;
+  padding: 0 20px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
 }
 
-.copy-right {
-	/* position: absolute; */
-	/* bottom: 0; */
-	width: 100%;
-	text-align: center;
-	line-height: 40px;
-	font-size: 14px;
-	color: #ccc;
-	background-color: #252525;
+.social-links-minimal {
+  margin-bottom: 20px;
+}
+.social-links-minimal a {
+  font-size: 18px;
+  color: #555;
+  margin: 0 10px;
+  text-decoration: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-.copy-right a {
-	color: #ccc;
-	transition: .2s ease;
+.footer-nav-minimal {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 25px 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Cho mobile */
+}
+.footer-nav-minimal li {
+  margin: 5px 10px;
+}
+.footer-nav-minimal a {
+  text-decoration: none;
+  color: #666;
+  font-size: 14px;
 }
 
-.copy-right a:hover {
-	color: #fff;
+.copyright-minimal {
+  font-size: 13px;
+  color: #aaa;
+  margin: 0;
 }
-
-/* ======= End Footer ======== */

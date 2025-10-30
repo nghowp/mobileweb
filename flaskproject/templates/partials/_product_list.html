@@ -1,0 +1,153 @@
+<div class="product-title" style="padding: 20px 100px;">
+    <h5><i class="fa-solid fa-fire icon-fire"></i>Tất cả sản phẩm</h5>
+</div>
+
+{% if products %}
+<div class="row align-items-stretch" style="padding: 0px 100px;">
+  {% for p in products %}
+  <div class="col-md-3 col-6" style="padding: 5px">
+    <div class="card h-100 d-flex flex-column" style="padding: 5px">
+      <a href="{{ url_for('main.products_details', product_id=p.id) }}">
+        {% if p.image %}
+        <img
+          src="{{ url_for('static', filename=p.image) }}"
+          class="card-img-top"
+          alt="{{ p.name }}"
+          style="object-fit: contain; height: 150px"
+        />
+        {% else %}
+        <img
+          src="{{ url_for('static', filename='img/default.png') }}"
+          class="card-img-top"
+          alt="Ảnh mặc định"
+          style="object-fit: contain; height: 150px"
+        />
+        {% endif %}
+      </a>
+
+      <div class="card-body d-flex flex-column">
+        <a
+          href="{{ url_for('main.products_details', product_id=p.id) }}"
+          class="product-link-wrapper"
+        >
+          <h7 class="card-title" style="color: #1d2939; line-height: 21px">
+            {{ p.name }}
+          </h7>
+          <div class="card-text" style="font-size: smaller">
+            <span class="spec-tag">{{ p.screen }}</span>
+            <span class="spec-tag" style="margin-top: 5px">
+              SSD {{ p.store }}
+            </span>
+          </div>
+
+          <strong
+            class="card-text"
+            style="color: #dd2f2c; font-weight: bold; font-size: 18px"
+          >
+            {{ "{:,.0f}".format(p.price).replace(",", ".") }}₫
+          </strong>
+
+          <div class="product-rating" style="font-size: smaller">
+            {% if p.rating_score and p.rating_score > 0 %}
+            <i class="fa-solid fa-star"></i>
+            <span class="rating-score">
+              {{ "%.1f"|format(p.rating_score) }}
+            </span>
+            {% endif %} {% if p.sold_count and p.sold_count > 0 %} {% if
+            p.rating_score and p.rating_score > 0 %}
+            <span class="bullet">•</span>
+            {% endif %}
+            <span class="sold-count">
+              Đã bán {% if p.sold_count >= 1000 %} {{
+              ("%.1f"|format(p.sold_count / 1000)).replace('.', ',') }}k {% else
+              %} {{ p.sold_count }} {% endif %}
+            </span>
+            {% endif %}
+          </div>
+        </a>
+        <div class="button-container mt-auto">
+          <button
+            type="button"
+            class="my-Btn"
+            onclick="addToCart(event, {{ p.id }}, '{{ p.name}}', {{ p.price }}, '{{ url_for('static', filename=p.image) }}')"
+          >
+            <div class="sign">
+              <svg viewBox="0 0 576 512">
+                <path
+                  d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96zM252 160c0 11 9 20 20 20h44v44c0 11 9 20 20 20s20-9 20-20V180h44c11 0 20-9 20-20s-9-20-20-20H356V96c0-11-9-20-20-20s-20 9-20 20v44H272c-11 0-20 9-20 20z"
+                />
+              </svg>
+            </div>
+            <div class="text">Add to cart</div>
+          </button>
+
+          <a href="{{ url_for('main.methods_pay', product_id=p.id) }}">
+            <button type="button" class="my-Btn">
+              <div class="sign">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                  <path
+                    d="M13.5 3h-11A2.5 2.5 0 0 0 0 5.5v5A2.5 2.5 0 0 0 2.5 13h11a2.5 2.5 0 0 0 2.5-2.5v-5A2.5 2.5 0 0 0 13.5 3zM3 8H2V6h1v2zm11-1H5V5h9v2z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div class="text">Buy now</div>
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p style="text-align: center; color: red; font-size: medium">
+  <i>Không có sản phẩm nào!!!</i>
+</p>
+{% endif %}
+
+<!-- Pagination -->
+{% if pagination and pagination.pages > 1 %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item {% if not pagination.has_prev %} disabled {% endif %}">
+      <a
+        class="page-link"
+        href="{{ url_for('main.home', page=pagination.prev_num) }}"
+        hx-get="{{ url_for('main.home', page=pagination.prev_num) }}"
+        hx-target="#product-list"
+        hx-swap="innerHTML"
+        hx-push-url="true"
+        >&laquo;</a
+      >
+    </li>
+    {% for page in pagination.iter_pages(left_edge=1, right_edge=1,
+    left_current=2, right_current=2) %} {% if page %}
+    <li class="page-item {% if page == pagination.page %} action {% endif %}">
+      <a
+        class="page-link"
+        href="{{ url_for('main.home', page=page) }}"
+        hx-get="{{ url_for('main.home', page=page) }}"
+        hx-target="#product-list"
+        hx-swap="innerHTML"
+        hx-push-url="true"
+        >{{ page }}</a
+      >
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">...</span></li>
+    {% endif %} {% endfor %}
+    <li class="page-item {% if not pagination.has_next %} disabled {% endif %}">
+      <a
+        class="page-link"
+        href="{{ url_for('main.home', page=pagination.next_num) }}"
+        hx-get="{{ url_for('main.home', page=pagination.next_num) }}"
+        hx-target="#product-list"
+        hx-swap="innerHTML"
+        hx-push-url="true"
+        >&raquo;</a
+      >
+    </li>
+  </ul>
+</nav>
+{% endif %}

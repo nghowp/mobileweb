@@ -1,0 +1,257 @@
+.category-nav {
+  position: relative;
+  z-index: 50;
+}
+
+.category-nav .navbar-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.category-nav .nav-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  display: block;
+  padding: 0.6rem 1rem;
+  transition: all 0.2s ease-in-out;
+
+  background-color: transparent;
+}
+
+.category-nav .nav-item {
+  text-align: center;
+  flex-grow: 1;
+  background-color: rgb(255, 255, 255); /* Nền trắng mặc định */
+  border-right: 1px solid #f0f0f0;
+  border-bottom: 3px solid #eee;
+  padding: 0;
+  margin: 0;
+
+  /* Thêm: transition cho background-color để mượt hơn */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.category-nav .nav-item:first-child {
+  /* border-radius: 10px 0px 0px 10px; */
+}
+
+.category-nav .nav-item:last-child {
+  /* border-radius: 0px 10px 10px 0px; */
+  border-right: none;
+}
+
+.category-nav .nav-item:hover .nav-link {
+  transform: translateY(-3px);
+}
+
+.category-nav .nav-item:hover {
+  background-color: #f4f8f4;
+  box-shadow: 0px 5px 0px 0px rgba(0, 0, 0, 0.1);
+  border-bottom-color: rgb(72, 149, 90);
+}
+
+.category-nav .nav-item.active {
+  border-bottom-color: rgb(72, 149, 90);
+  background-color: #f4f8f4;
+}
+
+.category-nav .nav-item.active .nav-link {
+  /* background-color: #f4f8f4; */
+  transform: translateY(-3px);
+  font-weight: 700;
+}
+
+.card-text {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.card-text .spec-tag {
+  display: inline-block;
+  background-color: #f0f2f5;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-right: 6px;
+  font-size: 12px;
+  color: #4a4a4a;
+  font-weight: 500;
+}
+
+.product-rating {
+  font-size: 13px;
+  color: #6c757d;
+  margin-top: 5px;
+  margin-bottom: 8px;
+}
+
+/* Kiểu cho icon ngôi sao */
+.product-rating .fa-star {
+  color: #f5a623;
+  margin-right: 3px;
+}
+
+/* Kiểu cho số điểm (5.0) */
+.product-rating .rating-score {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Kiểu cho dấu chấm ngăn cách */
+.product-rating .bullet {
+  margin: 0 5px;
+}
+
+/* --- CSS CHO THẺ SẢN PHẨM --- */
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hiệu ứng khi rê chuột vào card */
+.card:hover {
+  transform: translateY(-5px); /* Nâng card lên một chút */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Bóng đổ đậm hơn */
+}
+
+/* --- CSS CHO ẢNH SẢN PHẨM --- */
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  padding: 15px;
+  background-color: #f8f9fa;
+}
+
+/* --- CSS CHO PHẦN THÂN CARD (Nội dung text) --- */
+.card-body {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tiêu đề sản phẩm */
+.card-body .card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1d2939;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+/* Phần hiển thị thông số (screen, store) */
+.card-body .card-text {
+  margin-bottom: 12px;
+}
+/* Các thẻ thông số (6.5 inch, SSD 128GB) */
+.card-body .spec-tag {
+  display: inline-block;
+  background-color: #f0f2f5;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-right: 6px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: #4a4a4a;
+  font-weight: 500;
+}
+
+/* Khối dưới cùng chứa giá, rating, nút Đặt hàng */
+.card-body .bottom-section {
+  margin-top: auto;
+  /* text-align: center; Tùy chọn: căn giữa nội dung trong khối này */
+}
+
+/* Hiển thị giá */
+.card-body .price-display {
+  font-size: 18px;
+  font-weight: bold;
+  color: #dd2f2c;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Phần rating và đã bán */
+.card-body .product-rating {
+  font-size: 13px;
+  color: #6c757d;
+  margin-bottom: 12px;
+  display: block;
+}
+.product-rating .fa-star {
+  color: #f5a623;
+  margin-right: 3px;
+}
+.product-rating .rating-score {
+  font-weight: 500;
+  color: #333;
+}
+.product-rating .bullet {
+  margin: 0 5px;
+}
+
+/* Nút Đặt hàng */
+.card-body .btn-primary {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.row {
+  padding: 0px 100px;
+  margin-bottom: 30px;
+  --bs-gutter-y: 20px;
+  --bs-gutter-x: 20px;
+}
+
+.col-md-3,
+.col-6 {
+  padding: var(--bs-gutter-x) / 2;
+}
+
+.col-md-3.col-6[style*="padding: 5px;"] {
+  padding: initial !important;
+}
+
+.icon-fire {
+  color: #ff6a00;
+  margin-right: 5px;
+}
+
+.card-body > a.product-link-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-body a.product-link-wrapper > strong.card-text {
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.card-body a.product-link-wrapper > strong.card-text,
+.card-body a.product-link-wrapper > .product-rating {
+  display: block;
+}

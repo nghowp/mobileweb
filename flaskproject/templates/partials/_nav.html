@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light category-nav" id="all-products-section">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item {% if not current_category_id %} active {% endif %}">
+                    <a class="nav-link" aria-current="page" href="{{ url_for('main.home') }}"
+                        hx-get="{{ url_for('main.home') }}"
+                        hx-target="#product-list"
+                        hx-swap="innerHTML"
+                        hx-push-url="true">
+                        All
+                    </a>
+                </li>
+            {% for c in categories %}
+                <li class="nav-item {% if c.id == current_category_id %} active {% endif %}">
+                    <a class="nav-link" href="{{ url_for('main.home', category_id=c.id) }}"
+                        hx-get="{{ url_for('main.home', category_id=c.id) }}"
+                        hx-target="#product-list"
+                        hx-swap="innerHTML"
+                        hx-push-url="true">
+                        {{ c.name }}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+      
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,294 @@
+{% extends 'layout/base.html' %}
+{% block title %} Bảng điểu khiển {% endblock %}
+{% block head_js %}
+    <!-- Thêm Font Awesome (Nếu base.html chưa có) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <div class="flex h-screen bg-gray-100">
+        <aside class="w-64 bg-gray-900 text-white flex-shrink-0 md:block max-md:hidden max-md:absolute max-md:h-full z-20" id="sidebar">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-center">Admin Panel</h1>
+            </div>
+            
+            <nav class="mt-6">
+                <a href="{{ url_for('main.admin') }}" class="flex items-center px-6 py-3 bg-blue-700 text-white">
+                    <i class="fas fa-tachometer-alt w-6"></i>
+                    <span class="ml-3">Bảng điều khiển</span>
+                </a>
+                <a href="{{ url_for('main.admin_orders') }}" class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                    <i class="fas fa-box-open w-6"></i>
+                    <span class="ml-3">Quản lý Đơn hàng</span>
+                </a>
+                <a href="{{ url_for('main.admin_products') }}" class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                    <i class="fas fa-tags w-6"></i>
+                    <span class="ml-3">Quản lý Sản phẩm</span>
+                </a>
+                <a href="{{ url_for('main.admin_user') }}" class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                    <i class="fas fa-users w-6"></i>
+                    <span class="ml-3">Quản lý Người dùng</span>
+                </a>
+                <a href="#" class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                    <i class="fas fa-cogs w-6"></i>
+                    <span class="ml-3">Cài đặt</span>
+                </a>
+            </nav>
+
+            <div class="absolute bottom-0 p-6">
+                <!-- Sửa: Trỏ link Đăng xuất đến route của bạn -->
+                <a href="{{ url_for('main.user_signout') }}" class="flex items-center text-gray-400 hover:text-white transition-all">
+                    <i class="fas fa-sign-out-alt w-6"></i>
+                    <span class="ml-3">Đăng xuất</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- 2. KHU VỰC NỘI DUNG CHÍNH -->
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            
+            <!-- 2.1. HEADER (THANH ĐIỀU HƯỚNG TRÊN) -->
+            <header class="bg-white shadow-md p-4 flex justify-between items-center z-10">
+                <!-- Nút ẩn/hiện Sidebar cho mobile -->
+                <button id="menu-toggle" class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <h2 class="text-xl font-semibold text-gray-800 hidden md:block">Chào mừng, Admin!</h2>
+                
+                <!-- Tìm kiếm và Thông tin User -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Tìm kiếm..." class="px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <span class="absolute right-4 top-2.5 text-gray-400">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-bell text-gray-600 text-xl cursor-pointer"></i>
+                        <span class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+                    </div>
+                    <!-- (Tùy chọn) Hiển thị tên user nếu đã đăng nhập -->
+                    <!-- <span class_name="text-gray-700">{{ current_user.name }}</span> -->
+                    <img src="https://placehold.co/40x40/E2E8F0/333?text=A" alt="Avatar" class="w-10 h-10 rounded-full cursor-pointer">
+                </div>
+            </header>
+
+            <!-- 2.2. NỘI DUNG CHÍNH (THẺ VÀ BẢNG) -->
+            <main class="flex-1 p-6">
+                
+                <!-- Hàng Thẻ thống kê -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Tổng Doanh thu</p>
+                                <!-- Sửa: Thêm ID và hiển thị "..." lúc tải -->
+                                <p id="stats-revenue" class="text-3xl font-bold text-gray-900">...</p>
+                            </div>
+                            <div class="bg-blue-100 text-blue-600 p-3 rounded-full">
+                                <i class="fas fa-dollar-sign fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Đơn hàng mới</p>
+                                <!-- Sửa: Thêm ID và hiển thị "..." lúc tải -->
+                                <p id="stats-orders" class="text-3xl font-bold text-gray-900">...</p>
+                            </div>
+                            <div class="bg-green-100 text-green-600 p-3 rounded-full">
+                                <i class="fas fa-shopping-cart fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Người dùng mới</p>
+                                <!-- Sửa: Thêm ID và hiển thị "..." lúc tải -->
+                                <p id="stats-users" class="text-3xl font-bold text-gray-900">...</p>
+                            </div>
+                            <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full">
+                                <i class="fas fa-user-plus fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Lượt truy cập</p>
+                                <!-- Sửa: Thêm ID và hiển thị "..." lúc tải -->
+                                <p id="stats-visits" class="text-3xl font-bold text-gray-900">...</p>
+                            </div>
+                            <div class="bg-indigo-100 text-indigo-600 p-3 rounded-full">
+                                <i class="fas fa-chart-bar fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bảng Dữ liệu -->
+                <div class="bg-white rounded-lg shadow-lg mt-8">
+                    <div class="p-4 border-b">
+                        <h3 class="text-xl font-semibold text-gray-800">Đơn hàng gần đây</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã Đơn hàng</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Khách hàng</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày đặt</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tổng tiền</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
+                                </tr>
+                            </thead>
+                            <!-- Sửa: Thêm ID cho tbody và XÓA các dòng <tr> tĩnh -->
+                            <tbody id="recent-orders-tbody" class="bg-white divide-y divide-gray-200">
+                                <!-- Dữ liệu sẽ được chèn vào đây bằng JavaScript -->
+                                <tr>
+                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                        Đang tải dữ liệu...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+{% endblock %}
+
+{% block body_js %}
+    {{ super() if super }} <!-- (Giữ JS từ base.html nếu có) -->
+
+    <!-- Script cho Menu Mobile (Giữ nguyên) -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('max-md:hidden');
+            sidebar.classList.toggle('max-md:absolute');
+            sidebar.classList.toggle('h-full');
+        });
+    </script>
+
+    <!-- === THÊM MỚI: Script để tải dữ liệu động === -->
+    <script>
+        // Chạy khi toàn bộ nội dung HTML đã được tải
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchDashboardStats();
+            fetchRecentOrders();
+        });
+
+        /**
+         * Lấy dữ liệu thống kê từ API và cập nhật 4 thẻ
+         */
+        function fetchDashboardStats() {
+            fetch('/api/admin/dashboard_stats')
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) throw new Error(data.error);
+
+                    document.getElementById('stats-revenue').innerText = data.total_revenue;
+                    document.getElementById('stats-orders').innerText = data.new_orders;
+                    document.getElementById('stats-users').innerText = data.new_users;
+                    document.getElementById('stats-visits').innerText = data.visits;
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải thống kê:', error);
+                    // Hiển thị lỗi trên thẻ
+                    document.getElementById('stats-revenue').innerText = 'Lỗi';
+                    document.getElementById('stats-orders').innerText = 'Lỗi';
+                    document.getElementById('stats-users').innerText = 'Lỗi';
+                    document.getElementById('stats-visits').innerText = 'Lỗi';
+                });
+        }
+
+        /**
+         * Lấy dữ liệu đơn hàng gần đây và cập nhật bảng
+         */
+        function fetchRecentOrders() {
+            const tbody = document.getElementById('recent-orders-tbody');
+            
+            fetch('/api/admin/recent_orders')
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) throw new Error(data.error);
+
+                    tbody.innerHTML = ''; // Xóa dòng "Đang tải..."
+
+                    if (data.orders && data.orders.length > 0) {
+                        data.orders.forEach(order => {
+                            const row = `
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${order.id}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${order.customer}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.date}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${order.total}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        ${renderStatus(order.status, order.status_color)}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900">Xem</a>
+                                    </td>
+                                </tr>
+                            `;
+                            tbody.innerHTML += row;
+                        });
+                    } else {
+                        // Hiển thị nếu không có đơn hàng nào
+                        tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Không có đơn hàng gần đây.</td></tr>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải đơn hàng:', error);
+                    tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-4 text-center text-red-500">Không thể tải dữ liệu đơn hàng.</td></tr>`;
+                });
+        }
+
+        /**
+         * Hàm hỗ trợ tạo nhãn trạng thái (status)
+         * Backend của bạn đã cung cấp 'status_color' nên chúng ta dùng nó
+         */
+        function renderStatus(status, color) {
+            let colorClasses = '';
+            switch (color) {
+                case 'green':
+                    colorClasses = 'bg-green-100 text-green-800';
+                    break;
+                case 'yellow':
+                    colorClasses = 'bg-yellow-100 text-yellow-800';
+                    break;
+                case 'red':
+                    colorClasses = 'bg-red-100 text-red-800';
+                    break;
+                default:
+                    colorClasses = 'bg-gray-100 text-gray-800';
+            }
+            return `<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${colorClasses}">
+                        ${status}
+                    </span>`;
+        }
+    </script>
+{% endblock %}

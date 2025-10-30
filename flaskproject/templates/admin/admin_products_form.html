@@ -1,0 +1,160 @@
+{% extends 'layout/base.html' %}
+{% block title %} Thêm Sản phẩm mới {% endblock %}
+{% block head_js %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<div class="flex h-screen bg-gray-100">
+    <aside class="w-64 bg-gray-900 text-white flex-shrink-0 md:block max-md:hidden max-md:absolute max-md:h-full z-20" id="sidebar">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold text-center">Admin Panel</h1>
+        </div>
+        
+        <nav class="mt-6">
+             <a href="{{ url_for('main.admin') }}" class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                <i class="fas fa-tachometer-alt w-6"></i>
+                <span class="ml-3">Bảng điều khiển</span>
+            </a>
+            <a href="{{ url_for('main.admin_orders') }}" class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                <i class="fas fa-box-open w-6"></i>
+                <span class="ml-3">Quản lý Đơn hàng</span>
+            </a>
+            <a href="{{ url_for('main.admin_products') }}" class="flex items-center px-6 py-3 bg-blue-700 text-white">
+                <i class="fas fa-tags w-6"></i>
+                <span class="ml-3">Quản lý Sản phẩm</span>
+            </a>
+            <a href="{{ url_for('main.admin_user') }}" class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                <i class="fas fa-users w-6"></i>
+                <span class="ml-3">Quản lý Người dùng</span>
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                <i class="fas fa-cogs w-6"></i>
+                <span class="ml-3">Cài đặt</span>
+            </a>
+        </nav>
+        <div class="absolute bottom-0 p-6">
+            <a href="{{ url_for('main.user_signout') }}" class="flex items-center text-gray-400 hover:text-white transition-all">
+                <i class="fas fa-sign-out-alt w-6"></i>
+                <span class="ml-3">Đăng xuất</span>
+            </a>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col overflow-y-auto">
+        
+        <header class="bg-white shadow-md p-4 flex justify-between items-center z-10">
+            <h2 class="text-xl font-semibold text-gray-800">Thêm Sản phẩm mới</h2>
+            <a href="{{ url_for('main.admin_products') }}" class="text-blue-600 hover:text-blue-800">
+                &larr; Quay lại danh sách
+            </a>
+        </header>
+
+        <main class="flex-1 p-6">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                
+                {% if error %}
+                    <div class="mb-4 p-4 bg-red-100 text-red-700 border border-red-300 rounded-md">
+                        <strong>Lỗi:</strong> {{ error }}
+                    </div>
+                {% endif %}
+
+                <form action="{{ url_for('main.admin_product_add') }}" method="POST">
+                    
+                    <h3 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Thông tin cơ bản</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="md:col-span-2">
+                            <label for="name" class="block text-sm font-medium text-gray-700">Tên sản phẩm *</label>
+                            <input type="text" id="name" name="name" value="{{ product.name or '' }}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="category_id" class="block text-sm font-medium text-gray-700">Danh mục *</label>
+                            <select id="category_id" name="category_id" required class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                <option value="" disabled {% if not product.category_id %}selected{% endif %}>-- Chọn danh mục --</option>
+                                {% for c in categories %}
+                                    <option value="{{ c.id }}" {% if product.category_id == c.id|string %}selected{% endif %}>{{ c.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                        <div>
+                            <label for="price" class="block text-sm font-medium text-gray-700">Giá (VNĐ) *</label>
+                            <input type="number" id="price" name="price" value="{{ product.price or 0 }}" required min="0" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                         <div>
+                            <label for="stock_quantity" class="block text-sm font-medium text-gray-700">Tồn kho *</Flabel>
+                            <input type="number" id="stock_quantity" name="stock_quantity" value="{{ product.stock_quantity or 0 }}" required min="0" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="image" class="block text-sm font-medium text-gray-700">Đường dẫn ảnh</label>
+                            <input type="text" id="image" name="image" value="{{ product.image or '' }}" placeholder="VD: img/products/iphone_15.png" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label for="description" class="block text-sm font-medium text-gray-700">Mô tả</label>
+                        <textarea id="description" name="description" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ product.description or '' }}</textarea>
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4 mt-8">Thông số kỹ thuật</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="screen" class="block text-sm font-medium text-gray-700">Màn hình</label>
+                            <input type="text" id="screen" name="screen" value="{{ product.screen or '' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="operating" class="block text-sm font-medium text-gray-700">Hệ điều hành</Hlabel>
+                            <input type="text" id="operating" name="operating" value="{{ product.operating or '' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="camera_a" class="block text-sm font-medium text-gray-700">Camera sau</label>
+                            <input type="text" id="camera_a" name="camera_a" value="{{ product.camera_a or '' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="camera_f" class="block text-sm font-medium text-gray-700">Camera trước</label>
+                            <input type="text" id="camera_f" name="camera_f" value="{{ product.camera_f or '' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="cpu" class="block text-sm font-medium text-gray-700">CPU</label>
+                            <input type="text" id="cpu" name="cpu" value="{{ product.cpu or '' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="ram" class="block text-sm font-medium text-gray-700">RAM</label>
+                            <input type="text" id="ram" name="ram" value="{{ product.ram or '' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                         <div>
+                            <label for="store" class="block text-sm font-medium text-gray-700">Bộ nhớ trong</label>
+                            <input type="text" id="store" name="store" value="{{ product.store or '' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                         <div>
+                            <label for="battery" class="block text-sm font-medium text-gray-700">Pin</label>
+                            <input type="text" id="battery" name="battery" value="{{ product.battery or '' }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-4 border-t flex justify-end">
+                        <a href="{{ url_for('main.admin_products') }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md shadow-sm hover:bg-gray-300 mr-3">
+                            Hủy
+                        </a>
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            Lưu Sản phẩm
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block body_js %}
+{% endblock %}

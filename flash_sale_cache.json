@@ -1,0 +1,45 @@
+{
+    "products": [
+        {
+            "discount_percent": 13,
+            "flash_sale_price": 32353000,
+            "image_url": "img/products/iPhone_17_prm.jpg",
+            "name": "iPhone 17 Pro Max",
+            "original_price": 37000000,
+            "product_id": 1
+        },
+        {
+            "discount_percent": 16,
+            "flash_sale_price": 14294000,
+            "image_url": "img/products/iPhone16e.jpg",
+            "name": "iPhone 16e",
+            "original_price": 16999000,
+            "product_id": 5
+        },
+        {
+            "discount_percent": 15,
+            "flash_sale_price": 21176000,
+            "image_url": "img/products/iPhone17.jpg",
+            "name": "iPhone 17",
+            "original_price": 24999000,
+            "product_id": 10
+        },
+        {
+            "discount_percent": 12,
+            "flash_sale_price": 25438000,
+            "image_url": "img/products/MacBookAir.jpg",
+            "name": "MacBook Air 13 inch",
+            "original_price": 29000000,
+            "product_id": 3
+        },
+        {
+            "discount_percent": 12,
+            "flash_sale_price": 15594000,
+            "image_url": "img/products/iPad mini 7 5G.jpg",
+            "name": "iPad Mini 7 5G",
+            "original_price": 17690000,
+            "product_id": 19
+        }
+    ],
+    "start_time": "2025-11-10T15:24:53.264507"
+}

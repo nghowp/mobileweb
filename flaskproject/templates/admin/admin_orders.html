@@ -1,0 +1,460 @@
+{% extends 'layout/base.html' %} {% block title %} Quản lý Đơn hàng {% endblock
+%} {% block head_js %}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
+<script src="https://cdn.tailwindcss.com"></script>
+{% endblock %} {% block header %} {% endblock %} {% block content %}
+<div class="flex h-screen bg-gray-100">
+  <aside
+    class="w-64 bg-gray-900 text-white flex-shrink-0 md:block max-md:hidden max-md:absolute max-md:h-full z-20"
+    id="sidebar"
+  >
+    <div class="p-6">
+      <h1 class="text-2xl font-bold text-center">Admin Panel</h1>
+    </div>
+
+    <nav class="mt-6">
+      <a
+        href="{{ url_for('main.admin') }}"
+        class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all"
+      >
+        <i class="fas fa-tachometer-alt w-6"></i>
+        <span class="ml-3">Bảng điều khiển</span>
+      </a>
+
+      <a
+        href="{{ url_for('main.admin_orders') }}"
+        class="flex items-center px-6 py-3 bg-blue-700 text-white"
+      >
+        <i class="fas fa-box-open w-6"></i>
+        <span class="ml-3">Quản lý Đơn hàng</span>
+      </a>
+      <a
+        href="{{ url_for('main.admin_products') }}"
+        class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all"
+      >
+        <i class="fas fa-tags w-6"></i>
+        <span class="ml-3">Quản lý Sản phẩm</span>
+      </a>
+      <a
+        href="{{ url_for('main.admin_user') }}"
+        class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all"
+      >
+        <i class="fas fa-users w-6"></i>
+        <span class="ml-3">Quản lý Người dùng</span>
+      </a>
+      <a
+        href="#"
+        class="flex items-center px-6 py-3 text-gray-400 hover:bg-gray-700 hover:text-white transition-all"
+      >
+        <i class="fas fa-cogs w-6"></i>
+        <span class="ml-3">Cài đặt</span>
+      </a>
+    </nav>
+
+    <div class="absolute bottom-0 p-6">
+      <a
+        href="{{ url_for('main.user_signout') }}"
+        class="flex items-center text-gray-400 hover:text-white transition-all"
+      >
+        <i class="fas fa-sign-out-alt w-6"></i>
+        <span class="ml-3">Đăng xuất</span>
+      </a>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col overflow-y-auto">
+    <header
+      class="bg-white shadow-md p-4 flex justify-between items-center z-10"
+    >
+      <button id="menu-toggle" class="md:hidden text-gray-600">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+      <h2 class="text-xl font-semibold text-gray-800 hidden md:block">
+        Quản lý Đơn hàng
+      </h2>
+      <div class="flex items-center space-x-4">
+        <div class="relative">
+          <input
+            type="text"
+            placeholder="Tìm kiếm..."
+            class="px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <span class="absolute right-4 top-2.5 text-gray-400">
+            <i class="fas fa-search"></i>
+          </span>
+        </div>
+        <div class="relative">
+          <i class="fas fa-bell text-gray-600 text-xl cursor-pointer"></i>
+          <span
+            class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white"
+          ></span>
+        </div>
+        <img
+          src="https://placehold.co/40x40/E2E8F0/333?text=A"
+          alt="Avatar"
+          class="w-10 h-10 rounded-full cursor-pointer"
+        />
+      </div>
+    </header>
+
+    <main class="flex-1 p-6">
+      <!-- Thanh Lọc và Tìm kiếm -->
+      <div class="bg-white p-4 rounded-lg shadow-lg mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label
+              for="search-input"
+              class="block text-sm font-medium text-gray-700"
+              >Tìm kiếm</label
+            >
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Tên khách hàng, mã đơn..."
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label
+              for="status-filter"
+              class="block text-sm font-medium text-gray-700"
+              >Trạng thái</label
+            >
+            <select
+              id="status-filter"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">Tất cả</option>
+              <option value="Đang xử lý">Đang xử lý</option>
+              <option value="Đã giao">Đã giao</option>
+              <option value="Đã hủy">Đã hủy</option>
+            </select>
+          </div>
+          <div class="self-end">
+            <button
+              id="filter-button"
+              class="w-full md:w-auto bg-blue-600 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <i class="fas fa-filter mr-2"></i> Lọc
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bảng Dữ liệu -->
+      <div class="bg-white rounded-lg shadow-lg">
+        <div class="p-4 border-b">
+          <h3 class="text-xl font-semibold text-gray-800">
+            Danh sách Đơn hàng
+          </h3>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Mã Đơn hàng
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Khách hàng
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Ngày đặt
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Tổng tiền
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Trạng thái
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Hành động
+                </th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody" class="bg-white divide-y divide-gray-200">
+              <!-- Dữ liệu sẽ được chèn vào đây -->
+              <tr>
+                <td colspan="6" class="p-6 text-center text-gray-500">
+                  Đang tải dữ liệu...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Phân trang -->
+        <div
+          id="pagination-controls"
+          class="p-4 flex justify-between items-center border-t"
+        >
+          <!-- Phân trang sẽ được chèn vào đây -->
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+{% endblock %} {% block footer %} {% endblock %} {% block body_js %} {{ super()
+if super }}
+
+<!-- Script cho Menu Mobile -->
+<script>
+  const menuToggle = document.getElementById("menu-toggle");
+  const sidebar = document.getElementById("sidebar");
+  menuToggle.addEventListener("click", () => {
+    sidebar.classList.toggle("max-md:hidden");
+    sidebar.classList.toggle("max-md:absolute");
+    sidebar.classList.toggle("h-full");
+  });
+</script>
+
+<!-- Script tải dữ liệu cho trang quản lý đơn hàng -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("search-input");
+    const statusFilter = document.getElementById("status-filter");
+    const filterButton = document.getElementById("filter-button");
+    const tbody = document.getElementById("orders-tbody");
+    const paginationControls = document.getElementById("pagination-controls");
+
+    // Hàm chính để tải dữ liệu
+    function fetchOrders(page = 1) {
+      const searchTerm = searchInput.value;
+      const statusTerm = statusFilter.value;
+
+      // Hiển thị trạng thái tải
+      tbody.innerHTML =
+        '<tr><td colspan="6" class="p-6 text-center text-gray-500">Đang tải dữ liệu...</td></tr>';
+
+      // Xây dựng URL API
+      const apiUrl = new URL("/api/admin/all_orders", window.location.origin);
+      apiUrl.searchParams.append("page", page);
+      if (searchTerm) {
+        apiUrl.searchParams.append("search", searchTerm);
+      }
+      if (statusTerm) {
+        apiUrl.searchParams.append("status", statusTerm);
+      }
+
+      fetch(apiUrl)
+        .then((response) => {
+          if (!response.ok) throw new Error("Network response was not ok");
+          return response.json();
+        })
+        .then((data) => {
+          if (data.error) throw new Error(data.error);
+          renderTable(data.orders);
+          renderPagination(data.pagination);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi tải đơn hàng:", error);
+          tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-red-500">Không thể tải dữ liệu. ${error.message}</td></tr>`;
+        });
+    }
+
+    // Hàm vẽ lại bảng
+    function renderTable(orders) {
+      tbody.innerHTML = ""; // Xóa dữ liệu cũ
+      if (orders && orders.length > 0) {
+        orders.forEach((order) => {
+          // Tạo các class màu cho dropdown
+          let statusSelectColor =
+            "border-yellow-500 text-yellow-800 focus:ring-yellow-500";
+          if (order.status === "Đã giao") {
+            statusSelectColor =
+              "border-green-500 text-green-800 focus:ring-green-500";
+          } else if (order.status === "Đã hủy") {
+            statusSelectColor =
+              "border-red-500 text-red-800 focus:ring-red-500";
+          }
+
+          const row = `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${
+                      order.id
+                    }</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${
+                      order.customer
+                    }</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
+                      order.date
+                    }</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${
+                      order.total
+                    }</td>
+
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        ${renderStatus(order.status, order.status_color)}
+                    </td>
+
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">Xem</a>
+
+                        <select 
+                            class="order-status-select rounded-md p-1 border-2 bg-transparent font-semibold ${statusSelectColor} focus:outline-none focus:ring-1" 
+                            data-order-id="${order.id_raw}"
+                        >
+                            <option value="Đang xử lý" ${
+                              order.status === "Đang xử lý" ? "selected" : ""
+                            }>Đang xử lý</option>
+                            <option value="Đã giao" ${
+                              order.status === "Đã giao" ? "selected" : ""
+                            }>Đã giao</option>
+                            <option value="Đã hủy" ${
+                              order.status === "Đã hủy" ? "selected" : ""
+                            }>Đã hủy</option>
+                        </select>
+                    </td>
+                    </tr>
+            `;
+          tbody.innerHTML += row;
+        });
+      } else {
+        tbody.innerHTML =
+          '<tr><td colspan="6" class="p-6 text-center text-gray-500">Không tìm thấy đơn hàng nào.</td></tr>';
+      }
+    }
+
+    // Hàm vẽ lại phân trang
+    function renderPagination(pagination) {
+      if (!pagination || pagination.total_pages <= 1) {
+        paginationControls.innerHTML = "";
+        return;
+      }
+
+      let html = `
+                    <div class="text-sm text-gray-700">
+                        Hiển thị <strong>${
+                          (pagination.page - 1) * pagination.per_page + 1
+                        }</strong>
+                        tới <strong>${Math.min(
+                          pagination.page * pagination.per_page,
+                          pagination.total_items
+                        )}</strong>
+                        của <strong>${pagination.total_items}</strong> kết quả
+                    </div>
+                    <div class="flex space-x-1">
+                `;
+
+      // Nút Trang trước
+      if (pagination.has_prev) {
+        html += `<button data-page="${pagination.prev_page}" class="pagination-link px-3 py-1 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">&laquo; Trước</button>`;
+      } else {
+        html += `<button class="pagination-link px-3 py-1 rounded-md border border-gray-300 bg-gray-50 text-sm font-medium text-gray-400 cursor-not-allowed" disabled>&laquo; Trước</button>`;
+      }
+
+      // Các trang
+      pagination.iter_pages.forEach((p) => {
+        if (p) {
+          if (p === pagination.page) {
+            html += `<button data-page="${p}" class="pagination-link px-3 py-1 rounded-md border border-blue-500 bg-blue-50 text-sm font-medium text-blue-600" disabled>${p}</button>`;
+          } else {
+            html += `<button data-page="${p}" class="pagination-link px-3 py-1 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">${p}</button>`;
+          }
+        } else {
+          html += `<span class="px-3 py-1 text-sm">...</span>`;
+        }
+      });
+
+      // Nút Trang sau
+      if (pagination.has_next) {
+        html += `<button data-page="${pagination.next_page}" class="pagination-link px-3 py-1 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">Sau &raquo;</button>`;
+      } else {
+        html += `<button class="pagination-link px-3 py-1 rounded-md border border-gray-300 bg-gray-50 text-sm font-medium text-gray-400 cursor-not-allowed" disabled>Sau &raquo;</button>`;
+      }
+
+      html += "</div>";
+      paginationControls.innerHTML = html;
+    }
+
+    function renderStatus(status, color) {
+      let colorClasses = "";
+      switch (color) {
+        case "green":
+          colorClasses = "bg-green-100 text-green-800";
+          break;
+        case "yellow":
+          colorClasses = "bg-yellow-100 text-yellow-800";
+          break;
+        case "red":
+          colorClasses = "bg-red-100 text-red-800";
+          break;
+        default:
+          colorClasses = "bg-gray-100 text-gray-800";
+      }
+      return `<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${colorClasses}">${status}</span>`;
+    }
+
+    // Gắn sự kiện
+    filterButton.addEventListener("click", () => {
+      fetchOrders(1);
+    });
+
+    paginationControls.addEventListener("click", (e) => {
+      const target = e.target.closest(".pagination-link");
+      if (target && !target.disabled) {
+        const page = target.dataset.page;
+        fetchOrders(page);
+      }
+    });
+
+    tbody.addEventListener("change", function (e) {
+      // Chỉ bắt sự kiện 'change' từ <select> của chúng ta
+      if (e.target.classList.contains("order-status-select")) {
+        const select = e.target;
+        const orderId = select.dataset.orderId;
+        const newStatus = select.value;
+
+        if (
+          !confirm(
+            `Bạn có chắc muốn đổi đơn hàng #${orderId} thành "${newStatus}" không?`
+          )
+        ) {
+          select.value = order.status; // Trả lại giá trị cũ nếu hủy
+          return;
+        }
+
+        select.disabled = true; // Vô hiệu hóa trong khi chờ
+
+        // Gọi API 'update_order_status' (đã có sẵn trong routes.py)
+        fetch(`/api/admin/update_order_status/${orderId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // Tải lại toàn bộ bảng để cập nhật
+              fetchOrders(1);
+              // (Bạn có thể lấy trang hiện tại từ pagination, nhưng trang 1 là dễ nhất)
+            } else {
+              throw new Error(data.error);
+            }
+          })
+          .catch((error) => {
+            console.error("Lỗi cập nhật status:", error);
+            alert(`Lỗi: ${error.message}`);
+            select.disabled = false; // Bật lại nếu lỗi
+          });
+      }
+    });
+
+    fetchOrders(1);
+  });
+</script>
+{% endblock %}

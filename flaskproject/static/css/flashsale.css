@@ -1,0 +1,287 @@
+#product-promotion {
+  background-color: #e6e5e5;
+  padding: 20px 0 20px 0;
+}
+/* -- 1. Toàn bộ Section (Giữ nguyên từ trước) -- */
+.flash-sale-section {
+  background-color: #fcfcfc; /* Nền trắng xám nhẹ */
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 1200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* Bỏ padding ở đây để thanh cam dính sát viền */
+}
+
+/* -- 2. Thanh Tiêu Đề (MỚI) -- */
+.flash-sale-header {
+  background: #ffa500; /* Màu cam */
+  /* Hơi dốc xuống (gradient) cho đẹp hơn */
+  background: linear-gradient(100deg, #ff8c00, #ffa500);
+
+  color: white; /* Toàn bộ chữ trong này màu trắng */
+  padding: 20px 25px;
+
+  /* Bo tròn chỉ 2 góc trên */
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+
+  /* Dàn Tiêu đề (trái) và Đồng hồ (phải) */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flash-sale-header .header-left h2 {
+  margin: 0;
+  font-size: 28px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.flash-sale-header .header-left p {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* -- 3. Đồng hồ đếm ngược (Sửa lại CSS từ lần trước) -- */
+/* Bỏ nền cam (vì cha đã có nền cam) */
+#countdown-timer.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  /* Xóa background và padding cũ */
+}
+
+#countdown-timer .timer-label {
+  color: white;
+  font-size: 18px; /* Cho nhỏ lại 1 chút */
+  font-weight: bold;
+  margin: 0;
+}
+
+#countdown-timer .timer-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#countdown-timer .separator {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  /* Dịch xuống 1 chút cho đẹp */
+  transform: translateY(-2px);
+}
+
+#countdown-timer #hours,
+#countdown-timer #minutes,
+#countdown-timer #seconds {
+  background-color: white;
+  color: #ff8c00; /* Chữ số màu cam */
+  font-size: 24px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 10px;
+  min-width: 45px;
+  text-align: center;
+}
+
+/* -- 4. Lưới Sản Phẩm (Giữ nguyên) -- */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 cột */
+  gap: 20px; /* Khoảng cách giữa các sản phẩm */
+  padding: 20px; /* Thêm padding cho khung lưới */
+}
+
+/* -- 5. THẺ SẢN PHẨM (Đẹp mắt) -- */
+.flash-sale-item {
+  background: #ffffff;
+  border: 1px solid #e9e9e9;
+  border-radius: 8px;
+  text-align: left; /* Căn trái cho đẹp */
+  overflow: hidden; /* Để bo góc ảnh */
+
+  /* Đổ bóng nhẹ */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.flash-sale-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Ảnh sản phẩm */
+.flash-sale-item img {
+  width: 100%;
+  height: 220px; /* Cố định chiều cao cho đồng đều */
+  object-fit: contain; /* Ảnh tự co lại */
+  background: #fdfdfd;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Khung chứa text (tên, giá) */
+.flash-sale-item .product-info {
+  padding: 15px;
+}
+
+/* Tên sản phẩm */
+.flash-sale-item h3 {
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+
+  /* Kỹ thuật cắt chữ 2 dòng */
+  height: 3.2em;
+  line-height: 1.6em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  margin: 0 0 10px 0; /* Xóa margin, thêm margin-bottom */
+}
+
+/* Giá gốc (gạch ngang) */
+.flash-sale-item .old-price {
+  font-size: 14px;
+  color: #999;
+  text-decoration: line-through;
+  margin: 0;
+  display: block;
+}
+
+/* Giá khuyến mãi (màu đỏ) */
+.flash-sale-item .new-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d70018; /* Màu đỏ */
+  margin: 5px 0 0 0;
+  display: block;
+}
+/* Thêm CSS này vào file của bạn */
+
+/* Khung bọc giá cũ và % */
+.flash-sale-item .price-wrapper {
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 8px; /* Khoảng cách giữa giá cũ và % */
+
+  /* Điều chỉnh lại khoảng cách 1 chút */
+  margin: 5px 0;
+  height: 1.5em; /* Giữ chiều cao cố định */
+}
+
+/* Thẻ % giảm giá (màu đỏ) */
+.flash-sale-item .discount-percent {
+  color: #d70018; /* Màu đỏ */
+  font-size: 14px;
+  font-weight: 600;
+
+  /* Thêm nền đỏ nhạt cho đẹp */
+  background-color: #fef0f1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Sửa lại CSS cũ một chút */
+.flash-sale-item .old-price {
+  margin: 0; /* Xóa margin cũ đi */
+}
+
+.flash-sale-item .new-price {
+  margin: 0; /* Xóa margin cũ đi */
+}
+
+.flash-sale-item a {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.flash-sale-item a.learn-more {
+  width: 10rem;
+  height: auto;
+}
+
+.flash-sale-item a.learn-more .circle {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: relative;
+  display: block;
+  margin: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: #007aff;
+  border-radius: 1.625rem;
+}
+
+.flash-sale-item a.learn-more .circle .icon {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background: #fff;
+}
+
+.flash-sale-item a.learn-more .circle .icon.arrow {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  left: 0.5rem;
+  width: 0.85rem;
+  height: 0.125rem;
+  background: none;
+}
+
+.flash-sale-item a.learn-more .circle .icon.arrow::before {
+  position: absolute;
+  content: "";
+  top: -0.2rem;
+  right: 0.0625rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-top: 0.125rem solid #fff;
+  border-right: 0.125rem solid #fff;
+  transform: rotate(45deg);
+}
+
+.flash-sale-item a.learn-more .button-text {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0 0 0 3rem;
+  color: #282936;
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1;
+  text-align: left;
+  text-transform: uppercase;
+  transform: translateY(10px);
+}
+
+.flash-sale-item a:hover .circle {
+  width: 100%;
+}
+
+.flash-sale-item a:hover .circle .icon.arrow {
+  background: #fff;
+  transform: translate(1rem, 0);
+}
+
+.flash-sale-item a:hover .button-text {
+  color: #fff;
+}

@@ -1,0 +1,398 @@
+/* ---- BỐ CỤC TỔNG THỂ 2 CỘT ---- */
+.cart-page-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 15px;
+  display: flex;
+  gap: 30px; /* Khoảng cách giữa 2 cột */
+}
+
+.cart-items-list {
+  flex: 3; /* Cột trái chiếm 3 phần */
+}
+
+.order-summary-container {
+  flex: 1; /* Cột phải chiếm 1 phần */
+  position: sticky; /* Dính lại khi cuộn */
+  top: 20px;
+}
+
+.cart-items-list h2,
+.order-summary-container h3 {
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* ---- CỘT TRÁI: DANH SÁCH SẢN PHẨM ---- */
+
+/* Tiêu đề bảng */
+.cart-header {
+  display: flex;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ddd;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Các item trong giỏ hàng */
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* Căn chỉnh các cột trong bảng */
+.cart-header .header-product,
+.cart-item .item-product {
+  flex: 3; /* Cột sản phẩm rộng nhất */
+}
+
+.cart-header .header-quantity,
+.cart-item .item-quantity {
+  flex: 1;
+  text-align: center;
+}
+.cart-header .header-price,
+.cart-item .item-price {
+  flex: 1.5;
+  text-align: right;
+}
+.cart-header .header-total,
+.cart-item .item-total {
+  flex: 1.5;
+  text-align: right;
+}
+.cart-header .header-remove,
+.cart-item .item-remove {
+  flex: 0.5;
+  text-align: right;
+}
+
+/* Chi tiết sản phẩm (ảnh + tên) */
+.item-product {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.item-product img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+.item-product h4 {
+  font-size: 1.1em;
+  margin: 0;
+}
+.item-product p {
+  font-size: 0.9em;
+  color: #777;
+  margin: 5px 0 0 0;
+}
+
+/* Nút xóa */
+.remove-btn {
+  background: none;
+  border: none;
+  color: #cc0000;
+  font-size: 1.5em;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 5px;
+}
+.remove-btn:hover {
+  color: #ff0000;
+}
+
+/* ---- CỘT PHẢI: TÓM TẮT ĐƠN HÀNG ---- */
+.summary-card {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 20px;
+}
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1em;
+  margin-bottom: 15px;
+}
+.summary-row.total-row {
+  font-weight: bold;
+  font-size: 1.3em;
+  padding-top: 15px;
+  border-top: 1px dashed #ccc;
+}
+.total-amount {
+  color: #d9534f; /* Màu đỏ cho tổng tiền */
+}
+
+/* Nút đăng nhập */
+.login-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.login-btn:hover {
+  background-color: #0056b3;
+}
+
+/* --- ĐẶT NÚT PAY CỦA BẠN VÀO GIỮA --- */
+button.container-pay {
+  background-color: #ffffff;
+  display: flex;
+  width: 270px;
+  height: 120px;
+  position: relative;
+  border-radius: 6px;
+  transition: 0.3s ease-in-out;
+  transform: scale(0.5);
+  transform-origin: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+button.container-pay:hover {
+  transform: scale(0.5);
+}
+
+button.container-pay:hover .left-side {
+  width: 100%;
+}
+
+.left-side {
+  background-color: #5de2a3;
+  width: 130px;
+  height: 120px;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.right-side {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  justify-content: space-between;
+  white-space: nowrap;
+  transition: 0.3s;
+}
+
+.right-side:hover {
+  background-color: #f9f7f9;
+}
+
+.arrow {
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+}
+
+.new {
+  font-size: 30px;
+  font-family: "Lexend Deca", sans-serif;
+  margin-left: 20px;
+}
+
+.card-pay {
+  width: 70px;
+  height: 46px;
+  background-color: #c7ffbc;
+  border-radius: 6px;
+  position: absolute;
+  display: flex;
+  z-index: 10;
+  flex-direction: column;
+  align-items: center;
+  -webkit-box-shadow: 9px 9px 9px -2px rgba(77, 200, 143, 0.72);
+  -moz-box-shadow: 9px 9px 9px -2px rgba(77, 200, 143, 0.72);
+  -webkit-box-shadow: 9px 9px 9px -2px rgba(77, 200, 143, 0.72);
+}
+
+.card-line {
+  width: 65px;
+  height: 13px;
+  background-color: #80ea69;
+  border-radius: 2px;
+  margin-top: 7px;
+}
+
+@media only screen and (max-width: 480px) {
+  .container {
+    transform: scale(0.7);
+  }
+
+  .container:hover {
+    transform: scale(0.74);
+  }
+
+  .new {
+    font-size: 18px;
+  }
+}
+
+.buttons-pay {
+  width: 8px;
+  height: 8px;
+  background-color: #379e1f;
+  box-shadow: 0 -10px 0 0 #26850e, 0 10px 0 0 #56be3e;
+  border-radius: 50%;
+  margin-top: 5px;
+  transform: rotate(90deg);
+  margin: 10px 0 0 -30px;
+}
+
+button.container-pay:hover .card-pay {
+  animation: slide-top 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) both;
+}
+
+button.container-pay:hover .post {
+  animation: slide-post 1s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+}
+
+@keyframes slide-top {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+
+  50% {
+    -webkit-transform: translateY(-70px) rotate(90deg);
+    transform: translateY(-70px) rotate(90deg);
+  }
+
+  60% {
+    -webkit-transform: translateY(-70px) rotate(90deg);
+    transform: translateY(-70px) rotate(90deg);
+  }
+
+  100% {
+    -webkit-transform: translateY(-8px) rotate(90deg);
+    transform: translateY(-8px) rotate(90deg);
+  }
+}
+
+.post {
+  width: 63px;
+  height: 75px;
+  background-color: #dddde0;
+  position: absolute;
+  z-index: 11;
+  bottom: 10px;
+  top: 120px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.post-line {
+  width: 47px;
+  height: 9px;
+  background-color: #545354;
+  position: absolute;
+  border-radius: 0px 0px 3px 3px;
+  right: 8px;
+  top: 8px;
+}
+
+.post-line:before {
+  content: "";
+  position: absolute;
+  width: 47px;
+  height: 9px;
+  background-color: #757375;
+  top: -8px;
+}
+
+.screen {
+  width: 47px;
+  height: 23px;
+  background-color: #ffffff;
+  position: absolute;
+  top: 22px;
+  right: 8px;
+  border-radius: 3px;
+}
+
+.numbers {
+  width: 12px;
+  height: 12px;
+  background-color: #838183;
+  box-shadow: 0 -18px 0 0 #838183, 0 18px 0 0 #838183;
+  border-radius: 2px;
+  position: absolute;
+  transform: rotate(90deg);
+  left: 25px;
+  top: 52px;
+}
+
+.numbers-line2 {
+  width: 12px;
+  height: 12px;
+  background-color: #aaa9ab;
+  box-shadow: 0 -18px 0 0 #aaa9ab, 0 18px 0 0 #aaa9ab;
+  border-radius: 2px;
+  position: absolute;
+  transform: rotate(90deg);
+  left: 25px;
+  top: 68px;
+}
+
+@keyframes slide-post {
+  50% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+
+  100% {
+    -webkit-transform: translateY(-70px);
+    transform: translateY(-70px);
+  }
+}
+
+.dollar {
+  position: absolute;
+  font-size: 16px;
+  font-family: "Lexend Deca", sans-serif;
+  width: 100%;
+  left: 0;
+  top: 0;
+  color: #4b953b;
+  text-align: center;
+}
+
+button.container-pay:hover .dollar {
+  animation: fade-in-fwd 0.3s 1s backwards;
+}
+
+@keyframes fade-in-fwd {
+  0% {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -564,28 +564,6 @@ function addProduct(p, ele, returnString) {
 }
 
 // Thêm topnav vào trang
-function addTopNav() {
-  document.write(`    
-	<div class="top-nav group">
-        <section>
-            <div class="social-top-nav">
-                <a class="fa fa-facebook"></a>
-                <a class="fa fa-twitter"></a>
-                <a class="fa fa-google"></a>
-                <a class="fa fa-youtube"></a>
-            </div> <!-- End Social Topnav -->
-
-            <ul class="top-nav-quicklink flexContain">
-                <li><a href="index.html"><i class="fa fa-home"></i> Trang chủ</a></li>
-                <li><a href="tintuc.html"><i class="fa fa-newspaper-o"></i> Tin tức</a></li>
-                <li><a href="tuyendung.html"><i class="fa fa-handshake-o"></i> Tuyển dụng</a></li>
-                <li><a href="gioithieu.html"><i class="fa fa-info-circle"></i> Giới thiệu</a></li>
-                <li><a href="trungtambaohanh.html"><i class="fa fa-wrench"></i> Bảo hành</a></li>
-                <li><a href="lienhe.html"><i class="fa fa-phone"></i> Liên hệ</a></li>
-            </ul> <!-- End Quick link -->
-        </section><!-- End Section -->
-    </div><!-- End Top Nav  -->`);
-}
 
 // Thêm header
 function addHeader() {
@@ -848,18 +826,17 @@ function auto_Get_Database() {
     console.log(img);
 
     // // rating
-    // var rating = a.getElementsByClassName('ratingresult')[0];
-    // var star = rating.getElementsByClassName('icontgdd-ystar').length;
-    // var rateCount = parseInt(rating.getElementsByTagName('span')[0].innerHTML);
+    var rating = a.getElementsByClassName("ratingresult")[0];
+    var star = rating.getElementsByClassName("icontgdd-ystar").length;
+    var rateCount = parseInt(rating.getElementsByTagName("span")[0].innerHTML);
 
-    // // promo
-    // var tragop = a.getElementsByClassName('installment');
-    // if(tragop.length) {
+    // promo
+    var tragop = a.getElementsByClassName("installment");
+    if (tragop.length) {
+    }
 
-    // }
-
-    // var giamgia = a.getElementsByClassName('discount').length;
-    // var giareonline = a.getElementsByClassName('shockprice').length;
+    var giamgia = a.getElementsByClassName("discount").length;
+    var giareonline = a.getElementsByClassName("shockprice").length;
   }
 }
 
@@ -914,45 +891,42 @@ function getThongTinSanPhamFrom_TheGioiDiDong() {
   })();
 }
 
-// $('.taikhoan').find('input').on('keyup blur focus', function (e) {
+$(".taikhoan")
+  .find("input")
+  .on("keyup blur focus", function (e) {
+    var $this = $(this),
+      label = $this.prev("label");
 
-//     var $this = $(this),
-//         label = $this.prev('label');
+    if (e.type === "keyup") {
+      if ($this.val() === "") {
+        label.removeClass("active highlight");
+      } else {
+        label.addClass("active highlight");
+      }
+    } else if (e.type === "blur") {
+      if ($this.val() === "") {
+        label.removeClass("active highlight");
+      } else {
+        label.removeClass("highlight");
+      }
+    } else if (e.type === "focus") {
+      if ($this.val() === "") {
+        label.removeClass("highlight");
+      } else if ($this.val() !== "") {
+        label.addClass("highlight");
+      }
+    }
+  });
 
-//     if (e.type === 'keyup') {
-//         if ($this.val() === '') {
-//             label.removeClass('active highlight');
-//         } else {
-//             label.addClass('active highlight');
-//         }
-//     } else if (e.type === 'blur') {
-//         if ($this.val() === '') {
-//             label.removeClass('active highlight');
-//         } else {
-//             label.removeClass('highlight');
-//         }
-//     } else if (e.type === 'focus') {
+$(".tab a").on("click", function (e) {
+  e.preventDefault();
 
-//         if ($this.val() === '') {
-//             label.removeClass('highlight');
-//         } else if ($this.val() !== '') {
-//             label.addClass('highlight');
-//         }
-//     }
+  $(this).parent().addClass("active");
+  $(this).parent().siblings().removeClass("active");
 
-// });
+  target = $(this).attr("href");
 
-// $('.tab a').on('click', function (e) {
+  $(".tab-content > div").not(target).hide();
 
-//     e.preventDefault();
-
-//     $(this).parent().addClass('active');
-//     $(this).parent().siblings().removeClass('active');
-
-//     target = $(this).attr('href');
-
-//     $('.tab-content > div').not(target).hide();
-
-//     $(target).fadeIn(600);
-
-// });
+  $(target).fadeIn(600);
+});

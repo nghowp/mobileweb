@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thanh toán</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+    <style>
+      /* --- Cài đặt chung --- */
+      :root {
+        --primary-color: #007bff;
+        --border-color: #ddd;
+        --background-color: #f9f9f9;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background-color: var(--background-color);
+        color: #333;
+        padding: 20px;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+
+      .container {
+        max-width: 700px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        padding: 30px;
+      }
+
+      h1 {
+        text-align: center;
+        color: var(--primary-color);
+        margin-bottom: 25px;
+      }
+
+      /* --- Cấu trúc Form --- */
+      .form-section {
+        margin-bottom: 25px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 25px;
+      }
+      .form-section:last-of-type {
+        border-bottom: none;
+      }
+
+      .form-section h2 {
+        font-size: 1.25rem;
+        margin-bottom: 20px;
+        color: #555;
+      }
+      .form-section h2 i {
+        margin-right: 10px;
+        color: var(--primary-color);
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .form-group input[type="text"],
+      .form-group input[type="tel"],
+      .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        font-family: inherit; /* Kế thừa font từ body */
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+      }
+
+      /* --- Tùy chỉnh Phương thức thanh toán --- */
+      .payment-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .payment-option {
+        position: relative;
+      }
+
+      .payment-option input[type="radio"] {
+        /* Ẩn nút radio mặc định */
+        position: absolute;
+        opacity: 0;
+      }
+
+      .payment-option label {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: border-color 0.2s, background-color 0.2s;
+      }
+
+      .payment-option label:hover {
+        background-color: #f5f5f5;
+      }
+
+      .payment-option label i {
+        font-size: 1.2rem;
+        margin-right: 15px;
+        width: 25px;
+        text-align: center;
+        color: #777;
+      }
+
+      .payment-option label span {
+        font-weight: 500;
+      }
+
+      /* Kiểu khi được chọn */
+      .payment-option input[type="radio"]:checked + label {
+        border-color: var(--primary-color);
+        background-color: rgba(0, 123, 255, 0.05);
+      }
+
+      .payment-option input[type="radio"]:checked + label i {
+        color: var(--primary-color);
+      }
+
+      /* --- Nút Submit --- */
+      .btn-submit {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s, opacity 0.2s;
+      }
+
+      .btn-submit:hover {
+        background-color: #0056b3;
+      }
+
+      .btn-submit:disabled {
+        background-color: #aaa;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      #toast-notification {
+        visibility: hidden;
+        opacity: 0;
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+        background-color: #4caf50; /* Xanh lá */
+        color: white;
+        padding: 16px;
+        border-radius: 8px;
+        font-size: 17px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: opacity 0.5s, visibility 0.5s, bottom 0.5s;
+      }
+
+      #toast-notification.show {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      #toast-notification.error {
+        background-color: #f44336; /* Đỏ */
+      }
+
+      .success-message {
+        text-align: center;
+        padding: 40px 0;
+      }
+      .success-message i {
+        font-size: 60px;
+        color: #4caf50;
+      }
+      .success-message h1 {
+        margin-top: 20px;
+        color: #333;
+      }
+      .success-message p {
+        font-size: 1.1rem;
+        color: #555;
+      }
+      .success-message .btn-home {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 20px;
+        background-color: var(--primary-color);
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: background-color 0.2s;
+      }
+      .success-message .btn-home:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="checkout-container">
+      <h1>Thông tin Giao hàng & Thanh toán</h1>
+      {% if current_user.is_authenticated %} 
+      {% if cart_items %}
+      <form
+        id="checkout-form"
+        data-home-url="{{ url_for('main.home') }}"
+        data-process-url="{{ url_for('main.process_order') }}"
+      >
+        <section class="form-section">
+          <h2><i class="fas fa-map-marker-alt"></i> 1. Địa chỉ nhận hàng</h2>
+
+          <div class="form-group">
+            <label for="fullname">Họ và tên</label>
+            <input type="text" id="fullname" placeholder="Họ và tên" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Số điện thoại</label>
+            <input type="tel" id="phone" placeholder="SĐT" required />
+          </div>
+
+          <div class="form-group">
+            <label for="address">Địa chỉ chi tiết</label>
+            <textarea
+              id="address"
+              rows="3"
+              placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố..."
+              required
+            ></textarea>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2><i class="fas fa-credit-card"></i> 2. Phương thức thanh toán</h2>
+
+          <div class="payment-options">
+            <div class="payment-option">
+              <input
+                type="radio"
+                id="payment-cod"
+                name="payment"
+                value="cod"
+                checked
+              />
+              <label for="payment-cod">
+                <i class="fas fa-truck"></i>
+                <span>Thanh toán khi nhận hàng (COD)</span>
+              </label>
+            </div>
+
+            <div class="payment-option">
+              <input
+                type="radio"
+                id="payment-card"
+                name="payment"
+                value="card"
+              />
+              <label for="payment-card">
+                <i class="fas fa-credit-card"></i>
+                <span>Thẻ Tín dụng / Ghi nợ</span>
+              </label>
+            </div>
+
+            <div class="payment-option">
+              <input
+                type="radio"
+                id="payment-wallet"
+                name="payment"
+                value="wallet"
+              />
+              <label for="payment-wallet">
+                <i class="fas fa-wallet"></i>
+                <span>Ví điện tử (MoMo, ZaloPay,...)</span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <button type="submit" class="btn-submit">Hoàn tất Đơn hàng</button>
+      </form>
+      {% else %}
+      <div class="success-message">
+        <i class="fas fa-shopping-cart" style="color: #aaa"></i>
+        <h1>Giỏ hàng của bạn đang trống!</h1>
+        <p>Không có sản phẩm nào để thanh toán.</p>
+        <a href="{{ url_for('main.home') }}" class="btn-home"
+          >Tiếp tục mua sắm</a
+        >
+      </div>
+      {% endif %}
+      {% else %}
+      <a href="{{ url_for('main.user_login', next='main.methods_pay') }}"
+        ><button type="submit" class="btn-submit">
+          Đăng nhập để thanh toán
+        </button></a
+      >
+      {% endif %}
+    </div>
+
+    <div id="toast-notification"></div>
+
+    <script>
+      function showToast(message, type = "success") {
+        const toast = document.getElementById("toast-notification");
+        toast.innerText = message;
+
+        if (type === "error") {
+          toast.className = "show error";
+        } else {
+          toast.className = "show";
+        }
+
+        setTimeout(() => {
+          toast.className = toast.className.replace("show", "");
+        }, 3000);
+      }
+
+      const checkoutForm = document.getElementById("checkout-form");
+      if (checkoutForm) {
+        checkoutForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const submitButton = this.querySelector(".btn-submit");
+          submitButton.disabled = true;
+          submitButton.innerText = "Đang xử lý...";
+
+          const homeUrl = this.dataset.homeUrl || "/";
+          const processUrl = this.dataset.processUrl;
+
+          if (!processUrl) {
+            console.error("Lỗi: Không tìm thấy data-process-url trên form.");
+            showToast("Lỗi cấu hình. Vui lòng thử lại sau.", "error");
+            submitButton.disabled = false;
+            submitButton.innerText = "Hoàn tất Đơn hàng";
+            return;
+          }
+
+          const fullName = document.getElementById("fullname").value;
+          const phone = document.getElementById("phone").value;
+          const address = document.getElementById("address").value;
+          const paymentMethod = document.querySelector(
+            'input[name="payment"]:checked'
+          ).value;
+
+          const orderData = {
+            fullName: fullName,
+            phone: phone,
+            address: address,
+            paymentMethod: paymentMethod,
+          };
+
+          console.log("Đang gửi đơn hàng đến:", processUrl);
+
+          fetch(processUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(orderData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                console.log("Đặt hàng thành công!");
+                const container = document.getElementById("checkout-container");
+
+                container.innerHTML = `
+            <div class="success-message">
+                <i class="fas fa-check-circle"></i>
+                <h1>Đặt hàng thành công!</h1>
+                <p>Cảm ơn ${data.fullName} đã mua hàng.</p>
+                <p>Chúng tôi sẽ liên hệ với bạn qua SĐT <strong>${data.phone}</strong> để xác nhận đơn.</p>
+                <a href="${homeUrl}" class="btn-home">Tiếp tục mua sắm</a>
+            </div>
+          `;
+              } else {
+                throw new Error(
+                  data.error || "Có lỗi không xác định từ server."
+                );
+              }
+            })
+            .catch((error) => {
+              console.error("Lỗi khi đặt hàng:", error);
+              showToast(error.message, "error");
+
+              submitButton.disabled = false;
+              submitButton.innerText = "Hoàn tất Đơn hàng";
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
